@@ -1,5 +1,8 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorService } from './services/http-interceptor.service';
+import { SpinnerService } from './services/spinner.service';
 
 
 
@@ -7,6 +10,10 @@ import { CommonModule } from '@angular/common';
   declarations: [],
   imports: [
     CommonModule
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
+    SpinnerService
   ]
 })
 export class CoreModule {

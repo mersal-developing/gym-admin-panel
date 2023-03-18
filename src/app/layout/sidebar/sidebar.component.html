@@ -16,3 +16,11 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+<div *ngIf="(showSpinner$ | async)" class="spinner-overlay">
+  <mat-spinner
+    color="primary"
+    mode="indeterminate">
+  </mat-spinner>
+</div>

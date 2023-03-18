@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { navigation } from 'src/app/core';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,6 +10,11 @@ import { navigation } from 'src/app/core';
 })
 export class SidebarComponent {
   public navLinks = navigation;
+  showSpinner$!: Observable<boolean>;
 
-  constructor() {}
+  constructor(private spinnerService: SpinnerService) {}
+
+  ngOnInit() {
+    this.showSpinner$ = this.spinnerService.getLoading();
+  }
 }

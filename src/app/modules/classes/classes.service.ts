@@ -9,5 +9,34 @@ import { Class } from './classes.model';
   providedIn: 'root',
 })
 export class ClassesService {
+  private classesList$: BehaviorSubject<Class[]> = new BehaviorSubject<Class[]>(
+    []
+  );
+  private classesApiUrl =
+    environment.server_url + API_URLS.AppApi + API_URLS.Classes;
 
+  constructor(private http: HttpClient) {
+    this.getClassesList().subscribe((classes) => {
+      this.classesList$.next(classes);
+    });
+  }
+
+  getClassesList(): Observable<Class[]> {
+    return this.http.get<Class[]>(this.classesApiUrl);
+  }
+
+  getClassesList$(): Observable<Class[]> {
+    return this.classesList$.asObservable();
+  }
+
+  deleteClass(id: string) {
+    this.http.delete(`${this.classesApiUrl}${id}/`).subscribe(() => this.updateClassLists())
+  }
+
+  //use this method to update classLists$ after delete or update any class
+  updateClassLists() {
+    this.getClassesList().subscribe((classes) => {
+      this.classesList$.next(classes);
+    });
+  }
 }

@@ -1,1 +1,30 @@
 
+<app-action-buttons [isAddButton]="true" (buttonAction)="onTableAction($event)"></app-action-buttons>
+
+
+<ng-container *ngIf="classesList$ | async as classesList">
+  <table mat-table [dataSource]="classesList" class="mat-elevation-z8">
+
+    <ng-container *ngFor="let column of initColumns">
+      <ng-container [matColumnDef]="column.name">
+        <th mat-header-cell *matHeaderCellDef> {{column.name}} </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="column.name !== 'action'; else actionTemplate">
+            {{element[column.value]}}
+          </ng-container>
+
+          <ng-template #actionTemplate>
+            <app-action-buttons [value]="element" (buttonAction)="onTableAction($event)"></app-action-buttons>
+        </ng-template>
+        </td>
+
+      </ng-container>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-container>
+
+
+
