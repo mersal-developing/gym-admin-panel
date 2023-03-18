@@ -1,0 +1,15 @@
+:host {
+  mat-toolbar {
+    mat-toolbar-row {
+      display: flex;
+      justify-content: space-between;
+
+      img{
+        &:nth-of-type(2) {
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+}

@@ -1,0 +1,18 @@
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #sidenav class="app-sidenav" mode="side" opened="true" [class.mat-elevation-z4]="true">
+    <mat-nav-list>
+      <ng-container *ngFor="let link of navLinks">
+        <mat-list-item [routerLink]="link?.id">
+          <mat-icon>{{link?.icon}}</mat-icon>
+
+          <span>{{link?.title}}</span>
+
+        </mat-list-item>
+      </ng-container>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="app-sidenav-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

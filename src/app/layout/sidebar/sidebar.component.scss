@@ -1,0 +1,19 @@
+:host {
+  .app-container {
+    height: 100%;
+
+    .app-sidenav {
+      width: 230px;
+    }
+
+
+    .app-sidenav-content {
+      height: 100%;
+      padding: 16px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+
