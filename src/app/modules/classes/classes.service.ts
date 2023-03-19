@@ -30,7 +30,9 @@ export class ClassesService {
   }
 
   deleteClass(id: string) {
-    this.http.delete(`${this.classesApiUrl}${id}/`).subscribe(() => this.updateClassLists())
+    this.http
+      .delete(`${this.classesApiUrl}${id}/`)
+      .subscribe(() => this.updateClassLists());
   }
 
   //use this method to update classLists$ after delete or update any class
@@ -41,11 +43,14 @@ export class ClassesService {
   }
 
   addNewClass(form: any) {
-   return this.http.post(this.classesApiUrl, form)
+    return this.http.post(this.classesApiUrl, form);
   }
 
-
   updateClass(form: any) {
-    return this.http.put(`${this.classesApiUrl}${form.id}`, form)
-   }
+    return this.http.put(`${this.classesApiUrl}${form.id}`, form);
+  }
+
+  getClassDetails(id: string): Observable<Class> {
+    return this.http.get<Class>(`${this.classesApiUrl}${id}`);
+  }
 }

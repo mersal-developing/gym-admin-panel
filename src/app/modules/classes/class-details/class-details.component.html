@@ -1,1 +1,16 @@
-<p>class-details works!</p>
+<ng-container *ngIf="!(dataLoading | async)">
+
+  <div class="container" >
+    <h1>Class: {{title}}</h1>
+    <p>about class: {{classDescription}}</p>
+    <div class="coach-info">
+      <h2>Coach: {{coachName}}</h2>
+      <p>about coach: {{coachBrief}}</p>
+    </div>
+    <div class="class-info">
+      <p>Class Time: {{time}}</p>
+      <p>Class Price: {{price}}</p>
+    </div>
+  </div>
+</ng-container>
+

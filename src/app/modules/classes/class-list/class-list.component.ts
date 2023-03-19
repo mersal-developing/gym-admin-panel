@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TableButtonAction, TableConsts } from 'src/app/shared';
 import { AddEditComponent } from 'src/app/shared/components/add-edit/add-edit.component';
@@ -42,7 +43,8 @@ export class ClassListComponent {
 
   constructor(
     private classService: ClassesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -124,6 +126,8 @@ export class ClassListComponent {
         break;
       }
       case TableConsts.actionButton.view: {
+
+        this.router.navigate([`classes/${event.value.id}`])
         break;
       }
       case TableConsts.actionButton.add: {
