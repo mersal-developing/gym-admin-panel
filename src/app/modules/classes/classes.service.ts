@@ -39,4 +39,8 @@ export class ClassesService {
       this.classesList$.next(classes);
     });
   }
+
+  addNewClass(form: any) {
+   return this.http.post(this.classesApiUrl, form)
+  }
 }
