@@ -23,7 +23,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     return next.handle(modifiedReq).pipe(
       catchError((error: any) => {
-          this.utilitiesService.openSnackBar(`Error ${error.error}`, 'close', 'error-alert');
+          this.utilitiesService.openSnackBar(`Error ${error.error.msg ? error.error.msg : error.error}`, 'close', 'error-alert');
 
         return throwError(() => error);
       }),

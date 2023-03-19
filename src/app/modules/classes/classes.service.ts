@@ -43,4 +43,9 @@ export class ClassesService {
   addNewClass(form: any) {
    return this.http.post(this.classesApiUrl, form)
   }
+
+
+  updateClass(form: any) {
+    return this.http.put(`${this.classesApiUrl}${form.id}`, form)
+   }
 }

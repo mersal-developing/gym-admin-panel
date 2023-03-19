@@ -58,6 +58,69 @@ export class ClassListComponent {
         break;
       }
       case TableConsts.actionButton.edit: {
+        const dialogRef = this.dialog.open(AddEditComponent, {
+          width: '300px',
+          data: {
+            title: 'add new class',
+            form: {
+              coach_name: [event.value.coach_name, Validators.required],
+              title: [event.value.title, Validators.required],
+              price: [event.value.price, Validators.required],
+              timing: [event.value.timing, Validators.required],
+              createdAt: [event.value.createdAt, Validators.required],
+              image: [event.value.image],
+              description: [event.value.description],
+              coach_brief: [event.value.coach_brief],
+              id: [event.value.id, Validators.required],
+            },
+            formElements: [
+              {
+                name: 'coach_name',
+                placeHolder: 'coach name',
+              },
+              {
+                name: 'title',
+                placeHolder: 'title',
+              },
+              {
+                name: 'price',
+                placeHolder: 'pricing',
+              },
+              {
+                name: 'timing',
+                placeHolder: 'Time',
+              },
+              {
+                name: 'createdAt',
+                placeHolder: 'createdAt',
+              },
+              {
+                name: 'image',
+                placeHolder: 'image',
+              },
+              {
+                name: 'description',
+                placeHolder: 'description',
+              },
+              {
+                name: 'coach_brief',
+                placeHolder: 'coach_brief',
+              },
+              {
+                name: 'id',
+                placeHolder: 'id',
+              },
+            ],
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((res) => {
+          res &&
+            this.classService
+              .updateClass(res)
+              .subscribe(() => this.classService.updateClassLists());
+        });
+
         break;
       }
       case TableConsts.actionButton.view: {
@@ -120,13 +183,12 @@ export class ClassListComponent {
           },
         });
 
-        dialogRef
-          .afterClosed()
-          .subscribe((res: any) =>
+        dialogRef.afterClosed().subscribe((res: any) => {
+          res &&
             this.classService
               .addNewClass(res)
-              .subscribe(() => this.classService.updateClassLists())
-          );
+              .subscribe(() => this.classService.updateClassLists());
+        });
 
         break;
       }
