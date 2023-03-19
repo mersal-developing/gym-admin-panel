@@ -5,12 +5,12 @@ import {
   HttpHandler,
   HttpEvent,
 } from '@angular/common/http';
-import { finalize, Observable } from 'rxjs';
-import { SpinnerService } from './spinner.service';
+import { catchError, finalize, Observable, throwError } from 'rxjs';
+import { UtilitiesService } from './utilities.service';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
-  constructor(private spinnerService: SpinnerService) {}
+  constructor(private utilitiesService: UtilitiesService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -19,10 +19,17 @@ export class HttpInterceptorService implements HttpInterceptor {
     const modifiedReq = req.clone({
       headers: req.headers.append('Authorization', 'Bearer MY_TOKEN'),
     });
-    this.spinnerService.setLoading(true);
+    this.utilitiesService.setLoading(true);
 
-    return next.handle(modifiedReq).pipe(finalize(() => {
-      this.spinnerService.setLoading(false);
-    }));
+    return next.handle(modifiedReq).pipe(
+      catchError((error: any) => {
+          this.utilitiesService.openSnackBar(`Error ${error.error}`, 'close', 'error-alert');
+
+        return throwError(() => error);
+      }),
+      finalize(() => {
+        this.utilitiesService.setLoading(false);
+      })
+    );
   }
 }

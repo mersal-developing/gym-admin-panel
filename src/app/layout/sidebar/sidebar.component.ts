@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { navigation } from 'src/app/core';
-import { SpinnerService } from 'src/app/core/services/spinner.service';
+import { UtilitiesService } from 'src/app/core/services/utilities.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
   public navLinks = navigation;
   showSpinner$!: Observable<boolean>;
 
-  constructor(private spinnerService: SpinnerService) {}
+  constructor(private UtilitiesService: UtilitiesService) {}
 
   ngOnInit() {
-    this.showSpinner$ = this.spinnerService.getLoading();
+    this.showSpinner$ = this.UtilitiesService.getLoading();
   }
 }

@@ -1,0 +1,16 @@
+:host{
+  padding: 26px;
+  overflow: hidden;
+  height: 158px;
+  display: inline-block;
+
+  .mat-dialog-title {
+    font-size: 20px;
+    color: #333;
+  }
+
+  .mat-dialog-content {
+    font-size: 16px;
+    color: #555;
+  }
+}

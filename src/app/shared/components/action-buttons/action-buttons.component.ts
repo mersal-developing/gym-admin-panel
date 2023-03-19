@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { UtilitiesService } from 'src/app/core/services/utilities.service';
 import { Class } from 'src/app/modules/classes/classes.model';
 import {
   TableButtonAction,
@@ -17,7 +19,7 @@ export class ActionButtonsComponent {
   @Output() buttonAction: EventEmitter<TableButtonAction> =
     new EventEmitter<TableButtonAction>();
 
-  constructor() {}
+  constructor(private utilitiesService: UtilitiesService) {}
 
   onEditClick() {
     this.buttonAction.emit({
@@ -27,10 +29,20 @@ export class ActionButtonsComponent {
   }
 
   onDeleteClick() {
-    this.buttonAction.emit({
-      name: TableConsts.actionButton.delete,
-      value: this.value,
+    let dialogRef = this.utilitiesService.openDialog(
+      { content: 'Are you sure you want to Delete?', heading: 'Delete' },
+      'error-dialog'
+    );
+
+    dialogRef.afterClosed().subscribe((res: any) => {
+      if (res === 'yes') {
+        this.buttonAction.emit({
+          name: TableConsts.actionButton.delete,
+          value: this.value,
+        });
+      }
     });
+
   }
 
   onViewClick() {
