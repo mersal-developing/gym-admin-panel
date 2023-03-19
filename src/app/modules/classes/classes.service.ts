@@ -15,7 +15,9 @@ export class ClassesService {
   private classesApiUrl =
     environment.server_url + API_URLS.AppApi + API_URLS.Classes;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+  ) {
     this.getClassesList().subscribe((classes) => {
       this.classesList$.next(classes);
     });
@@ -30,9 +32,7 @@ export class ClassesService {
   }
 
   deleteClass(id: string) {
-    this.http
-      .delete(`${this.classesApiUrl}${id}/`)
-      .subscribe(() => this.updateClassLists());
+    return this.http.delete(`${this.classesApiUrl}${id}/`);
   }
 
   //use this method to update classLists$ after delete or update any class

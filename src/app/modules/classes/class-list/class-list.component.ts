@@ -3,6 +3,8 @@ import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AppRoutes } from 'src/app/core';
+import { UtilitiesService } from 'src/app/core/services/utilities.service';
 import { TableButtonAction, TableConsts } from 'src/app/shared';
 import { AddEditComponent } from 'src/app/shared/components/add-edit/add-edit.component';
 import { Class } from '../classes.model';
@@ -41,29 +43,70 @@ export class ClassListComponent {
 
   classesList$!: Observable<Class[]>;
 
+  formElements = [
+    {
+      name: 'coach_name',
+      placeHolder: 'coach name',
+    },
+    {
+      name: 'title',
+      placeHolder: 'title',
+    },
+    {
+      name: 'price',
+      placeHolder: 'pricing',
+    },
+    {
+      name: 'timing',
+      placeHolder: 'Time',
+    },
+    {
+      name: 'createdAt',
+      placeHolder: 'createdAt',
+    },
+    {
+      name: 'image',
+      placeHolder: 'image',
+    },
+    {
+      name: 'description',
+      placeHolder: 'description',
+    },
+    {
+      name: 'coach_brief',
+      placeHolder: 'coach_brief',
+    },
+    {
+      name: 'id',
+      placeHolder: 'id',
+    },
+  ];
+
   constructor(
     private classService: ClassesService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
     this.classesList$ = this.classService.getClassesList$();
   }
 
-  addClass() {}
-
   onTableAction(event: TableButtonAction) {
     switch (event.name) {
       case TableConsts.actionButton.delete: {
-        this.classService.deleteClass(event.value?.id);
+        this.classService.deleteClass(event.value?.id).subscribe(() => {
+          this.classService.updateClassLists()
+          this.utilitiesService.openSnackBar('Class deleted succeffully', 'close', 'error-alert')
+        })
         break;
       }
       case TableConsts.actionButton.edit: {
         const dialogRef = this.dialog.open(AddEditComponent, {
           width: '300px',
           data: {
-            title: 'add new class',
+            title: 'Edit class',
             form: {
               coach_name: [event.value.coach_name, Validators.required],
               title: [event.value.title, Validators.required],
@@ -75,44 +118,7 @@ export class ClassListComponent {
               coach_brief: [event.value.coach_brief],
               id: [event.value.id, Validators.required],
             },
-            formElements: [
-              {
-                name: 'coach_name',
-                placeHolder: 'coach name',
-              },
-              {
-                name: 'title',
-                placeHolder: 'title',
-              },
-              {
-                name: 'price',
-                placeHolder: 'pricing',
-              },
-              {
-                name: 'timing',
-                placeHolder: 'Time',
-              },
-              {
-                name: 'createdAt',
-                placeHolder: 'createdAt',
-              },
-              {
-                name: 'image',
-                placeHolder: 'image',
-              },
-              {
-                name: 'description',
-                placeHolder: 'description',
-              },
-              {
-                name: 'coach_brief',
-                placeHolder: 'coach_brief',
-              },
-              {
-                name: 'id',
-                placeHolder: 'id',
-              },
-            ],
+            formElements: [...this.formElements],
           },
         });
 
@@ -120,14 +126,17 @@ export class ClassListComponent {
           res &&
             this.classService
               .updateClass(res)
-              .subscribe(() => this.classService.updateClassLists());
+              .subscribe(() => {
+                this.classService.updateClassLists()
+                this.utilitiesService.openSnackBar('class edited succefully','close', 'success-snackbar')
+
+              });
         });
 
         break;
       }
       case TableConsts.actionButton.view: {
-
-        this.router.navigate([`classes/${event.value.id}`])
+        this.router.navigate([`${AppRoutes.ClassesPage}/${event.value.id}`]);
         break;
       }
       case TableConsts.actionButton.add: {
@@ -146,44 +155,7 @@ export class ClassListComponent {
               coach_brief: [''],
               id: ['', Validators.required],
             },
-            formElements: [
-              {
-                name: 'coach_name',
-                placeHolder: 'coach name',
-              },
-              {
-                name: 'title',
-                placeHolder: 'title',
-              },
-              {
-                name: 'price',
-                placeHolder: 'pricing',
-              },
-              {
-                name: 'timing',
-                placeHolder: 'Time',
-              },
-              {
-                name: 'createdAt',
-                placeHolder: 'createdAt',
-              },
-              {
-                name: 'image',
-                placeHolder: 'image',
-              },
-              {
-                name: 'description',
-                placeHolder: 'description',
-              },
-              {
-                name: 'coach_brief',
-                placeHolder: 'coach_brief',
-              },
-              {
-                name: 'id',
-                placeHolder: 'id',
-              },
-            ],
+            formElements: [...this.formElements],
           },
         });
 
@@ -191,7 +163,10 @@ export class ClassListComponent {
           res &&
             this.classService
               .addNewClass(res)
-              .subscribe(() => this.classService.updateClassLists());
+              .subscribe(() => {
+                this.classService.updateClassLists()
+                this.utilitiesService.openSnackBar('new class add succefully','close', 'success-snackbar')
+              });
         });
 
         break;

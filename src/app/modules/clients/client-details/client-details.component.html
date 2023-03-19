@@ -1,1 +1,15 @@
-<p>client-details works!</p>
+<ng-container *ngIf="!(dataLoading | async)">
+
+  <div class="container" >
+    <div class="client-info">
+			<img [src]="image ? image : 'assets/user.png'" alt="Client Profile Image">
+			<div class="client-details">
+				<h2>Full Name: {{fullName}}</h2>
+				<p>Mobile Number: {{mobileNumber}}</p>
+				<p>Address: {{address}}</p>
+				<p>Subscription Type: {{subscriptionType}}</p>
+			</div>
+		</div>
+  </div>
+</ng-container>
+
